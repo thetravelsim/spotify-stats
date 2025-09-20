@@ -1,0 +1,394 @@
+/* Viberate-inspired Color Scheme and Styling */
+
+:root {
+  /* Primary Colors */
+  --viberate-red: #E53E3E;
+  --viberate-red-hover: #C53030;
+  --viberate-red-light: #FED7D7;
+  
+  /* Background Colors */
+  --viberate-bg-primary: #FFFFFF;
+  --viberate-bg-secondary: #F7FAFC;
+  --viberate-bg-sidebar: #EDF2F7;
+  --viberate-bg-hover: #F7FAFC;
+  
+  /* Text Colors */
+  --viberate-text-primary: #2D3748;
+  --viberate-text-secondary: #718096;
+  --viberate-text-muted: #A0AEC0;
+  
+  /* Border Colors */
+  --viberate-border: #E2E8F0;
+  --viberate-border-light: #F7FAFC;
+  
+  /* Status Colors */
+  --viberate-success: #38A169;
+  --viberate-warning: #D69E2E;
+  --viberate-info: #3182CE;
+  --viberate-purple: #805AD5;
+  
+  /* Chart Colors */
+  --viberate-chart-1: #E53E3E;
+  --viberate-chart-2: #3182CE;
+  --viberate-chart-3: #38A169;
+  --viberate-chart-4: #805AD5;
+  --viberate-chart-5: #D69E2E;
+  --viberate-chart-6: #E53E3E;
+}
+
+/* Global Styling Updates */
+.viberate-theme {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+/* Header Styling */
+.viberate-header {
+  background: var(--viberate-bg-primary);
+  border-bottom: 1px solid var(--viberate-border);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.viberate-logo {
+  background: var(--viberate-red);
+  color: white;
+  font-weight: bold;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+/* Sidebar Styling */
+.viberate-sidebar {
+  background: var(--viberate-bg-sidebar);
+  border-right: 1px solid var(--viberate-border);
+}
+
+.viberate-sidebar-item {
+  color: var(--viberate-text-secondary);
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin: 2px 8px;
+  transition: all 0.2s ease;
+}
+
+.viberate-sidebar-item:hover {
+  background: var(--viberate-bg-hover);
+  color: var(--viberate-text-primary);
+}
+
+.viberate-sidebar-item.active {
+  background: var(--viberate-red-light);
+  color: var(--viberate-red);
+  font-weight: 500;
+}
+
+/* Table Styling */
+.viberate-table {
+  background: var(--viberate-bg-primary);
+  border: 1px solid var(--viberate-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.viberate-table-header {
+  background: var(--viberate-bg-secondary);
+  border-bottom: 1px solid var(--viberate-border);
+}
+
+.viberate-table-row {
+  border-bottom: 1px solid var(--viberate-border-light);
+  transition: background-color 0.2s ease;
+}
+
+.viberate-table-row:hover {
+  background: var(--viberate-bg-hover);
+}
+
+/* Button Styling */
+.viberate-btn-primary {
+  background: var(--viberate-red);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.viberate-btn-primary:hover {
+  background: var(--viberate-red-hover);
+}
+
+.viberate-btn-secondary {
+  background: var(--viberate-bg-secondary);
+  color: var(--viberate-text-primary);
+  border: 1px solid var(--viberate-border);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.viberate-btn-secondary:hover {
+  background: var(--viberate-bg-hover);
+  border-color: var(--viberate-red);
+}
+
+/* Card Styling */
+.viberate-card {
+  background: var(--viberate-bg-primary);
+  border: 1px solid var(--viberate-border);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.viberate-card-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--viberate-border);
+  background: var(--viberate-bg-secondary);
+}
+
+.viberate-card-body {
+  padding: 20px;
+}
+
+/* Badge Styling */
+.viberate-badge-success {
+  background: var(--viberate-success);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.viberate-badge-warning {
+  background: var(--viberate-warning);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.viberate-badge-info {
+  background: var(--viberate-info);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Platform Score Styling */
+.viberate-score {
+  background: var(--viberate-info);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* Rank Styling */
+.viberate-rank {
+  color: var(--viberate-text-primary);
+  font-weight: 600;
+}
+
+.viberate-rank-change-positive {
+  color: var(--viberate-success);
+  font-size: 12px;
+}
+
+.viberate-rank-change-negative {
+  color: var(--viberate-red);
+  font-size: 12px;
+}
+
+/* Chart Container Styling */
+.viberate-chart-container {
+  background: var(--viberate-bg-primary);
+  border: 1px solid var(--viberate-border);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+/* Tab Styling */
+.viberate-tab {
+  padding: 12px 16px;
+  border-bottom: 2px solid transparent;
+  color: var(--viberate-text-secondary);
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.viberate-tab:hover {
+  color: var(--viberate-text-primary);
+}
+
+.viberate-tab.active {
+  color: var(--viberate-red);
+  border-bottom-color: var(--viberate-red);
+}
+
+/* Search Input Styling */
+.viberate-search {
+  border: 1px solid var(--viberate-border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  background: var(--viberate-bg-primary);
+  transition: border-color 0.2s ease;
+}
+
+.viberate-search:focus {
+  outline: none;
+  border-color: var(--viberate-red);
+  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+}
+
+/* Filter Styling */
+.viberate-filter {
+  background: var(--viberate-bg-secondary);
+  border: 1px solid var(--viberate-border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: var(--viberate-text-primary);
+}
+
+/* Notification Badge */
+.viberate-notification {
+  background: var(--viberate-red);
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* Artist Profile Specific */
+.viberate-artist-header {
+  background: var(--viberate-bg-primary);
+  border-bottom: 1px solid var(--viberate-border);
+}
+
+.viberate-platform-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 2px solid transparent;
+  color: var(--viberate-text-secondary);
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.viberate-platform-tab:hover {
+  color: var(--viberate-text-primary);
+}
+
+.viberate-platform-tab.active {
+  color: var(--viberate-red);
+  border-bottom-color: var(--viberate-red);
+}
+
+/* Metric Cards */
+.viberate-metric-card {
+  background: var(--viberate-bg-primary);
+  border: 1px solid var(--viberate-border);
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+}
+
+.viberate-metric-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--viberate-text-primary);
+  margin-bottom: 4px;
+}
+
+.viberate-metric-label {
+  font-size: 12px;
+  color: var(--viberate-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.viberate-metric-change {
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.viberate-metric-change.positive {
+  color: var(--viberate-success);
+}
+
+.viberate-metric-change.negative {
+  color: var(--viberate-red);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .viberate-sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .viberate-sidebar.open {
+    transform: translateX(0);
+  }
+}
+
+/* Animation Classes */
+.viberate-fade-in {
+  animation: vibrateeFadeIn 0.3s ease-in-out;
+}
+
+@keyframes vibrateeFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.viberate-slide-in {
+  animation: vibrateeSlideIn 0.3s ease-in-out;
+}
+
+@keyframes vibrateeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Custom Scrollbar */
+.viberate-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.viberate-scrollbar::-webkit-scrollbar-track {
+  background: var(--viberate-bg-secondary);
+}
+
+.viberate-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--viberate-border);
+  border-radius: 3px;
+}
+
+.viberate-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--viberate-text-muted);
+}

@@ -118,3 +118,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+/* Import Viberate Theme */
+@import './viberate-theme.css';
