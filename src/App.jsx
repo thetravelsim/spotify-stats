@@ -4,7 +4,7 @@ import LandingPage from './components/LandingPage';
 import AnalyticsPlatformWorkingFixed from './components/AnalyticsPlatformWorkingFixed';
 import VibrateStyleAnalyticsPlatform from './components/VibrateStyleAnalyticsPlatform';
 import EnhancedAlbanianArtistsPlatform from './components/EnhancedAlbanianArtistsPlatform';
-import MobileFriendlyAlbanianMusicPlatform from './components/MobileFriendlyAlbanianMusicPlatform';
+import MobileOptimizedAlbanianMusicPlatform from './components/MobileOptimizedAlbanianMusicPlatform';
 import './App.css';
 
 const App = () => {
@@ -12,7 +12,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/launch-platform" element={<MobileFriendlyAlbanianMusicPlatform />} />
+        <Route path="/launch-platform" element={<MobileOptimizedAlbanianMusicPlatform />} />
         <Route path="/artists-platform" element={<EnhancedAlbanianArtistsPlatform />} />
         <Route path="/viberate-platform" element={<VibrateStyleAnalyticsPlatform />} />
         <Route path="/legacy-platform" element={<AnalyticsPlatformWorkingFixed />} />
