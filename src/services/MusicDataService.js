@@ -83,22 +83,29 @@ class MusicDataService {
     let lastError = null;
     
     // Try current provider
-    try {
-      const provider = this.getCurrentProvider();
-      const result = await this.retryRequest(() => provider[method](...args));
-      
-      // Cache successful result
-      if (this.config.cacheEnabled) {
-        this.cache.set(cacheKey, {
-          data: result,
-          timestamp: Date.now()
-        });
+    for (let attempt = 0; attempt <= this.config.retryAttempts; attempt++) {
+      try {
+        const provider = this.getCurrentProvider();
+        const result = await provider[method](...args);
+        
+        // Cache successful result
+        if (this.config.cacheEnabled) {
+          this.cache.set(cacheKey, {
+            data: result,
+            timestamp: Date.now()
+          });
+        }
+        
+        return result;
+      } catch (error) {
+        lastError = error;
+        console.warn(`${this.config.currentProvider} provider failed (attempt ${attempt + 1}):`, error.message);
+        if (attempt < this.config.retryAttempts) {
+          const delay = Math.pow(2, attempt) * 1000; // Exponential backoff
+          console.log(`Retrying in ${delay}ms...`);
+          await new Promise(resolve => setTimeout(resolve, delay));
+        }
       }
-      
-      return result;
-    } catch (error) {
-      lastError = error;
-      console.warn(`${this.config.currentProvider} provider failed:`, error.message);
     }
 
     // Fallback to mock data if enabled
@@ -115,29 +122,6 @@ class MusicDataService {
     throw lastError || new Error(`All providers failed for method: ${method}`);
   }
 
-  /**
-   * Retry logic for API requests
-   */
-  async retryRequest(requestFn) {
-    let lastError;
-    
-    for (let attempt = 1; attempt <= this.config.retryAttempts; attempt++) {
-      try {
-        return await requestFn();
-      } catch (error) {
-        lastError = error;
-        
-        if (attempt < this.config.retryAttempts) {
-          const delay = Math.pow(2, attempt) * 1000; // Exponential backoff
-          console.log(`Attempt ${attempt} failed, retrying in ${delay}ms...`);
-          await new Promise(resolve => setTimeout(resolve, delay));
-        }
-      }
-    }
-    
-    throw lastError;
-  }
-
   // ==================== ARTIST METHODS ====================
 
   /**
@@ -151,40 +135,14 @@ class MusicDataService {
 
   /**
    * Get detailed artist profile data
-   * @param {string} artistId - Artist identifier
-   * @returns {Promise<Object>} Artist profile object
+   * @param {string} artistId - Artist identifier (name or UUID)
+   * @returns {Promise<Object>} Artist profile object with comprehensive data
    */
   async getArtistProfile(artistId) {
     return this.makeRequest('getArtistProfile', artistId);
   }
 
-  /**
-   * Get artist's streaming statistics
-   * @param {string} artistId - Artist identifier
-   * @param {string} timeRange - '7d', '30d', '90d', '1y'
-   * @returns {Promise<Object>} Streaming statistics
-   */
-  async getArtistStreams(artistId, timeRange = '30d') {
-    return this.makeRequest('getArtistStreams', artistId, timeRange);
-  }
-
-  /**
-   * Get artist's audience demographics
-   * @param {string} artistId - Artist identifier
-   * @returns {Promise<Object>} Audience data with geographic distribution
-   */
-  async getArtistAudience(artistId) {
-    return this.makeRequest('getArtistAudience', artistId);
-  }
-
-  /**
-   * Get artist's social media metrics
-   * @param {string} artistId - Artist identifier
-   * @returns {Promise<Object>} Social media statistics
-   */
-  async getArtistSocial(artistId) {
-    return this.makeRequest('getArtistSocial', artistId);
-  }
+  // Removed getArtistStreams, getArtistAudience, getArtistSocial as data is now in getArtistProfile
 
   // ==================== TRACK METHODS ====================
 
@@ -307,3 +265,4 @@ class MusicDataService {
 
 // Export singleton instance
 export default new MusicDataService();
+

@@ -7,7 +7,7 @@
 
 class VibrateAPIProvider {
   constructor() {
-    this.baseURL = 'https://api.viberate.com/v1';
+    this.baseURL = 'https://data.viberate.com/api/v1'; // Corrected base URL
     this.apiKey = process.env.REACT_APP_VIBERATE_API_KEY || 'JjeDtsAttDAT1pAAXL5YC7Dk_ad-aaqW';
     this.rateLimitDelay = 1000; // 1 second between requests
     this.lastRequestTime = 0;
@@ -29,7 +29,7 @@ class VibrateAPIProvider {
 
     const url = `${this.baseURL}${endpoint}`;
     const headers = {
-      'Authorization': `Bearer ${this.apiKey}`,
+      'Access-Key': `${this.apiKey}`, // Corrected API key header
       'Content-Type': 'application/json',
       ...options.headers
     };
@@ -59,24 +59,32 @@ class VibrateAPIProvider {
    */
   transformArtistData(vibrateArtist) {
     return {
-      id: vibrateArtist.id,
+      id: vibrateArtist.uuid,
       name: vibrateArtist.name,
       country: vibrateArtist.country?.name || 'Unknown',
-      countryCode: vibrateArtist.country?.code || '🌍',
-      genre: vibrateArtist.genres?.[0]?.name || 'Unknown',
+      countryCode: vibrateArtist.country?.alpha2 || '🌍',
+      genre: vibrateArtist.genre?.name || 'Unknown',
       platformRank: vibrateArtist.rank || 0,
       platformScore: vibrateArtist.score || 0,
-      followers: this.formatNumber(vibrateArtist.followers?.total || 0),
-      streams: this.formatNumber(vibrateArtist.streams?.total || 0),
+      followers: this.formatNumber(vibrateArtist.followers?.total || vibrateArtist.followers || 0),
+      streams: this.formatNumber(vibrateArtist.streams?.total || vibrateArtist.streams || 0),
+      monthlyListeners: this.formatNumber(vibrateArtist.charts?.spotify?.overall?.listeners?.total || vibrateArtist.spotify_listeners || 0),
       socialBuzz: vibrateArtist.social_buzz || 0,
       momentum: this.calculateMomentum(vibrateArtist),
       growth: this.formatGrowth(vibrateArtist.growth || 0),
       verified: vibrateArtist.verified || false,
       label: vibrateArtist.label?.name || 'Independent',
-      photo: vibrateArtist.image_url || null,
-      spotifyId: vibrateArtist.spotify_id,
+      photo: vibrateArtist.image || null,
+      spotifyId: vibrateArtist.spotifyId || null, // Use the spotifyId passed from getArtistProfile
       appleMusicId: vibrateArtist.apple_music_id,
-      youtubeId: vibrateArtist.youtube_id
+      youtubeId: vibrateArtist.youtube_id,
+      socialPlatforms: {
+        instagram: vibrateArtist.charts?.social?.instagram?.followers?.total || vibrateArtist.instagram_followers || 0,
+        twitter: vibrateArtist.charts?.social?.twitter?.followers?.total || vibrateArtist.twitter_followers || 0,
+        facebook: vibrateArtist.charts?.social?.facebook?.followers?.total || vibrateArtist.facebook_followers || 0,
+        tiktok: vibrateArtist.charts?.social?.tiktok?.followers?.total || vibrateArtist.tiktok_followers || 0,
+        youtube: vibrateArtist.charts?.youtube?.overall?.subscribers_official?.total || vibrateArtist.youtube_subscribers_official || 0
+      }
     };
   }
 
@@ -85,12 +93,12 @@ class VibrateAPIProvider {
    */
   transformTrackData(vibrateTrack) {
     return {
-      id: vibrateTrack.id,
+      id: vibrateTrack.uuid,
       title: vibrateTrack.name,
       artist: vibrateTrack.artist?.name || 'Unknown Artist',
-      artistId: vibrateTrack.artist?.id,
+      artistId: vibrateTrack.artist?.uuid,
       album: vibrateTrack.album?.name || 'Unknown Album',
-      cover: vibrateTrack.album?.image_url || vibrateTrack.image_url,
+      cover: vibrateTrack.album?.image || vibrateTrack.image,
       duration: this.formatDuration(vibrateTrack.duration || 0),
       streams: this.formatNumber(vibrateTrack.streams?.total || 0),
       weeklyStreams: this.formatNumber(vibrateTrack.streams?.weekly || 0),
@@ -110,12 +118,12 @@ class VibrateAPIProvider {
     try {
       const params = new URLSearchParams();
       
-      if (filters.country) params.append('country', filters.country);
-      if (filters.genre) params.append('genre', filters.genre);
+      if (filters.country) params.append('countries', filters.country);
+      if (filters.genre) params.append('genres', filters.genre);
       if (filters.limit) params.append('limit', filters.limit);
       if (filters.offset) params.append('offset', filters.offset);
       
-      const endpoint = `/artists?${params.toString()}`;
+      const endpoint = `/artist/viberate/chart?${params.toString()}`;
       const response = await this.makeRequest(endpoint);
       
       return response.data?.map(artist => this.transformArtistData(artist)) || [];
@@ -125,57 +133,65 @@ class VibrateAPIProvider {
     }
   }
 
-  async getArtistProfile(artistId) {
+  async getArtistProfile(artistIdentifier) {
     try {
-      const response = await this.makeRequest(`/artists/${artistId}`);
-      return this.transformArtistData(response.data);
+      let artistId = artistIdentifier;
+      let spotifyId = null;
+      let artistData;
+
+      // Check if artistIdentifier is a UUID format
+      const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(artistIdentifier);
+
+      if (!isUUID) {
+        // If not a UUID, assume it's a name and search for it to get the UUID
+        const searchResult = await this.makeRequest(`/artist/search?q=${artistIdentifier}`);
+        const basicArtistInfo = searchResult.data?.[0]; // Take the first result
+        if (basicArtistInfo) {
+          artistId = basicArtistInfo.uuid; // Update artistId to the found UUID
+        } else {
+          throw new Error(`Artist with name ${artistIdentifier} not found.`);
+        }
+
+        // Now, use advanced search to get the spotifyId if available
+        const advancedSearchResult = await this.makeRequest(`/artist/advanced/search?q=${artistIdentifier}`);
+        const advancedArtistInfo = advancedSearchResult.data?.[0];
+        if (advancedArtistInfo) {
+          spotifyId = advancedArtistInfo.spotify_id;
+        }
+      }
+
+      // Now fetch detailed data using the UUID from the chart endpoint
+      const chartResult = await this.makeRequest(`/artist/viberate/chart?uuid=${artistId}`);
+      artistData = chartResult.data?.[0];
+
+      if (!artistData) {
+        throw new Error(`Detailed profile for artist with ID ${artistId} not found in chart data.`);
+      }
+
+      // Add spotifyId to the artistData before transforming
+      artistData.spotifyId = spotifyId;
+
+      return this.transformArtistData(artistData);
     } catch (error) {
-      console.error(`Failed to fetch artist profile ${artistId} from Viberate:`, error);
+      console.error(`Failed to fetch comprehensive artist profile for ${artistIdentifier} from Viberate:`, error);
       throw error;
     }
   }
 
+  // The following methods are no longer directly used by getArtistProfile but kept for potential future use
   async getArtistStreams(artistId, timeRange = '30d') {
-    try {
-      const response = await this.makeRequest(`/artists/${artistId}/streams?period=${timeRange}`);
-      return {
-        total: response.data?.total || 0,
-        daily: response.data?.daily || [],
-        growth: response.data?.growth || 0,
-        timeRange
-      };
-    } catch (error) {
-      console.error(`Failed to fetch artist streams for ${artistId}:`, error);
-      throw error;
-    }
+    console.warn('getArtistStreams is not currently integrated into getArtistProfile due to API limitations. Data might be available via chart endpoint.');
+    return { total: 0, daily: [], growth: 0, timeRange };
   }
 
   async getArtistAudience(artistId) {
-    try {
-      const response = await this.makeRequest(`/artists/${artistId}/audience`);
-      return {
-        countries: response.data?.countries || [],
-        demographics: response.data?.demographics || {},
-        totalListeners: response.data?.total_listeners || 0
-      };
-    } catch (error) {
-      console.error(`Failed to fetch artist audience for ${artistId}:`, error);
-      throw error;
-    }
+    console.warn('getArtistAudience is not currently integrated into getArtistProfile due to API limitations. Data might be available via chart endpoint.');
+    return { countries: [], demographics: {}, totalListeners: 0 };
   }
 
   async getArtistSocial(artistId) {
-    try {
-      const response = await this.makeRequest(`/artists/${artistId}/social`);
-      return {
-        platforms: response.data?.platforms || {},
-        totalFollowers: response.data?.total_followers || 0,
-        engagement: response.data?.engagement || 0
-      };
-    } catch (error) {
-      console.error(`Failed to fetch artist social data for ${artistId}:`, error);
-      throw error;
-    }
+    console.warn('getArtistSocial is not currently integrated into getArtistProfile due to API limitations. Data might be available via chart endpoint.');
+    return { platforms: {}, totalFollowers: 0, engagement: 0 };
   }
 
   // ==================== TRACK METHODS ====================
@@ -189,7 +205,7 @@ class VibrateAPIProvider {
       if (options.genre) params.append('genre', options.genre);
       if (options.limit) params.append('limit', options.limit);
       
-      const endpoint = `/tracks/charts?${params.toString()}`;
+      const endpoint = `/track/charts?${params.toString()}`;
       const response = await this.makeRequest(endpoint);
       
       return response.data?.map(track => this.transformTrackData(track)) || [];
@@ -201,7 +217,7 @@ class VibrateAPIProvider {
 
   async getTrackDetails(trackId) {
     try {
-      const response = await this.makeRequest(`/tracks/${trackId}`);
+      const response = await this.makeRequest(`/track/${trackId}`);
       return this.transformTrackData(response.data);
     } catch (error) {
       console.error(`Failed to fetch track details ${trackId} from Viberate:`, error);
@@ -211,13 +227,8 @@ class VibrateAPIProvider {
 
   async getTrackStreams(trackId, timeRange = '30d') {
     try {
-      const response = await this.makeRequest(`/tracks/${trackId}/streams?period=${timeRange}`);
-      return {
-        total: response.data?.total || 0,
-        daily: response.data?.daily || [],
-        growth: response.data?.growth || 0,
-        timeRange
-      };
+      const response = await this.makeRequest(`/track/${trackId}/streams?period=${timeRange}`);
+      return { total: response.data?.total || 0, daily: response.data?.daily || [], growth: response.data?.growth || 0, timeRange };
     } catch (error) {
       console.error(`Failed to fetch track streams for ${trackId}:`, error);
       throw error;
@@ -231,7 +242,7 @@ class VibrateAPIProvider {
       if (options.sort) params.append('sort', options.sort);
       if (options.limit) params.append('limit', options.limit);
       
-      const endpoint = `/artists/${artistId}/tracks?${params.toString()}`;
+      const endpoint = `/artist/${artistId}/tracks?${params.toString()}`;
       const response = await this.makeRequest(endpoint);
       
       return response.data?.map(track => this.transformTrackData(track)) || [];
@@ -245,7 +256,7 @@ class VibrateAPIProvider {
 
   async getPlaylistAnalytics(playlistId) {
     try {
-      const response = await this.makeRequest(`/playlists/${playlistId}/analytics`);
+      const response = await this.makeRequest(`/playlist/${playlistId}/analytics`);
       return response.data || {};
     } catch (error) {
       console.error(`Failed to fetch playlist analytics for ${playlistId}:`, error);
@@ -255,7 +266,7 @@ class VibrateAPIProvider {
 
   async getArtistPlaylists(artistId) {
     try {
-      const response = await this.makeRequest(`/artists/${artistId}/playlists`);
+      const response = await this.makeRequest(`/artist/${artistId}/playlists`);
       return response.data || [];
     } catch (error) {
       console.error(`Failed to fetch playlists for artist ${artistId}:`, error);
@@ -269,17 +280,16 @@ class VibrateAPIProvider {
     try {
       const params = new URLSearchParams();
       params.append('q', query);
-      params.append('type', type);
       
       if (options.limit) params.append('limit', options.limit);
       
-      const endpoint = `/search?${params.toString()}`;
+      const endpoint = `/artist/search?${params.toString()}`;
       const response = await this.makeRequest(endpoint);
       
       return {
-        artists: response.data?.artists?.map(artist => this.transformArtistData(artist)) || [],
-        tracks: response.data?.tracks?.map(track => this.transformTrackData(track)) || [],
-        albums: response.data?.albums || []
+        artists: response.data?.map(artist => this.transformArtistData(artist)) || [],
+        tracks: [], 
+        albums: [] 
       };
     } catch (error) {
       console.error(`Failed to search for "${query}":`, error);
@@ -311,9 +321,9 @@ class VibrateAPIProvider {
 
   async getHealthStatus() {
     try {
-      const response = await this.makeRequest('/health');
+      const response = await this.makeRequest('/rate-limit/status');
       return {
-        status: 'healthy',
+        status: response.data?.status === 'UNDER_LIMIT' ? 'healthy' : 'unhealthy',
         provider: 'viberate',
         timestamp: new Date().toISOString(),
         ...response.data
@@ -372,3 +382,4 @@ class VibrateAPIProvider {
 }
 
 export default VibrateAPIProvider;
+
