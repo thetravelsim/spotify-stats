@@ -21,7 +21,7 @@ class MusicDataService {
   constructor() {
     // Configuration for API providers
     this.config = {
-      currentProvider: process.env.REACT_APP_DEFAULT_PROVIDER || 'mock', // Force mock for now
+      currentProvider: process.env.REACT_APP_DEFAULT_PROVIDER || 'viberate', // Use Viberate API for live data
       fallbackToMock: true,
       retryAttempts: 1, // Reduce retries for faster fallback
       cacheEnabled: true,

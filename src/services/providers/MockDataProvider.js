@@ -89,7 +89,7 @@ class MockDataProvider {
         verified: true,
         label: 'OTR Records',
         photo: '/artists/i51cNWgZ4EFP.jpeg',
-        spotifyId: '4dpARuHxo51G3z768sgnrY',
+        spotifyId: '2SabhGDiBSyaM6QSuBUVqB',
         appleMusicId: '1234567890',
         youtubeId: 'UCabcdefghijklmnopqrstuvw'
       },
@@ -113,7 +113,7 @@ class MockDataProvider {
         verified: true,
         label: 'Independent',
         photo: '/artists/BDGuB4y4GFBt.png',
-        spotifyId: '5dpARuHxo51G3z768sgnrZ',
+        spotifyId: '6Cej574CUx7dHKuRHBPNp0',
         appleMusicId: '1234567891',
         youtubeId: 'UCabcdefghijklmnopqrstuvx'
       },
@@ -137,7 +137,7 @@ class MockDataProvider {
         verified: true,
         label: 'Independent',
         photo: '/artists/0zZQcV1fbemw.jpg',
-        spotifyId: '6dpARuHxo51G3z768sgnrA',
+        spotifyId: '5Cj0xJrG2k8TPOJQ1vdAmZ',
         appleMusicId: '1234567892',
         youtubeId: 'UCabcdefghijklmnopqrstuvy'
       },
