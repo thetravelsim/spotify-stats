@@ -33,7 +33,7 @@ class MusicDataService {
       viberate: new VibrateAPIProvider(),
       songstats: new SongstatsAPIProvider(),
       mock: new MockDataProvider(),
-      spotify: new SpotifyAPIProvider()
+      spotify: SpotifyAPIProvider
     };
 
     // Method to get artist image from Spotify
