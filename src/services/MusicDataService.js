@@ -20,9 +20,9 @@ class MusicDataService {
   constructor() {
     // Configuration for API providers
     this.config = {
-      currentProvider: 'viberate', // 'viberate', 'songstats', or 'mock'
+      currentProvider: process.env.REACT_APP_DEFAULT_PROVIDER || 'mock', // Force mock for now
       fallbackToMock: true,
-      retryAttempts: 3,
+      retryAttempts: 1, // Reduce retries for faster fallback
       cacheEnabled: true,
       cacheDuration: 300000, // 5 minutes
     };

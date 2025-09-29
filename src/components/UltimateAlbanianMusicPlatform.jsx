@@ -16,16 +16,38 @@ const UltimateAlbanianMusicPlatform = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const [allAlbanianArtists, setAllAlbanianArtists] = useState([]);
+  const [allAlbanianSongs, setAllAlbanianSongs] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const artists = await MusicDataService.getArtists({ country: 'AL', limit: 50 });
-        setFilteredData(artists);
         setError(null);
+        
+        console.log('Fetching data from MusicDataService...');
+        
+        // Fetch artists and songs in parallel
+        const [artists, songs] = await Promise.all([
+          MusicDataService.getArtists({ limit: 50 }),
+          MusicDataService.getTopTracks({ limit: 50 })
+        ]);
+        
+        console.log('Fetched artists:', artists);
+        console.log('Fetched songs:', songs);
+        
+        setAllAlbanianArtists(artists || []);
+        setAllAlbanianSongs(songs || []);
+        setFilteredData(artists || []);
+        
       } catch (err) {
-        setError('Failed to fetch data. Please try again later.');
-        console.error(err);
+        console.error('Error fetching data:', err);
+        setError(`Failed to fetch data: ${err.message}`);
+        
+        // Set empty arrays as fallback
+        setAllAlbanianArtists([]);
+        setAllAlbanianSongs([]);
+        setFilteredData([]);
       } finally {
         setLoading(false);
       }
@@ -33,10 +55,6 @@ const UltimateAlbanianMusicPlatform = () => {
 
     fetchData();
   }, []);
-
-  const allAlbanianArtists = filteredData;
-
-  const allAlbanianSongs = [];
 
 
   const genres = [...new Set(allAlbanianArtists.map(artist => artist.genre))];
