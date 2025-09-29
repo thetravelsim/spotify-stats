@@ -184,7 +184,7 @@ class MockDataProvider {
         monthlyGrowth: 6.1,
         verified: true,
         label: 'Atlantic Records',
-        photo: 'https://i.scdn.co/image/ab6761610000e5eb7c4f4e5d6a7b8c9d0e1f2a3b',
+        photo: '/artists/l16OqbL8nnO9.jpg',
         spotifyId: '4npEfmQ6YuiwW1GpUmaq3F',
         appleMusicId: '1061293026',
         youtubeId: 'UC-J-S5eKuZey9l3biz6ydxz'
@@ -208,7 +208,7 @@ class MockDataProvider {
         monthlyGrowth: 15.0,
         verified: true,
         label: 'Independent',
-        photo: 'https://i.scdn.co/image/ab6761610000e5eb3e4f5a6b7c8d9e0f1a2b3c4d',
+        photo: '/artists/GAj4GW2oD8fI.jpg',
         spotifyId: '7dpARuHxo51G3z768sgnrB',
         appleMusicId: '1234567893',
         youtubeId: 'UCabcdefghijklmnopqrstuvz'
@@ -232,7 +232,7 @@ class MockDataProvider {
         monthlyGrowth: 11.0,
         verified: true,
         label: 'Independent',
-        photo: 'https://i.scdn.co/image/ab6761610000e5eb5f6a7b8c9d0e1f2a3b4c5d6e',
+        photo: '/artists/M967KpW7wHPY.jpg',
         spotifyId: '8dpARuHxo51G3z768sgnrC',
         appleMusicId: '1234567894',
         youtubeId: 'UCabcdefghijklmnopqrstuva'
@@ -256,7 +256,7 @@ class MockDataProvider {
         monthlyGrowth: 8.0,
         verified: true,
         label: 'Independent',
-        photo: 'https://i.scdn.co/image/ab6761610000e5eb7a8b9c0d1e2f3a4b5c6d7e8f',
+        photo: '/artists/0YVZhy06U1Nn.jpg',
         spotifyId: '9dpARuHxo51G3z768sgnrD',
         appleMusicId: '1234567895',
         youtubeId: 'UCabcdefghijklmnopqrstuvb'
@@ -280,7 +280,7 @@ class MockDataProvider {
         monthlyGrowth: 6.0,
         verified: true,
         label: 'Independent',
-        photo: 'https://i.scdn.co/image/ab6761610000e5eb9b0c1d2e3f4a5b6c7d8e9f0a',
+        photo: '/artists/Aapyf9BbihYT.jpg',
         spotifyId: '0dpARuHxo51G3z768sgnrE',
         appleMusicId: '1234567896',
         youtubeId: 'UCabcdefghijklmnopqrstuvc'
@@ -304,7 +304,7 @@ class MockDataProvider {
         monthlyGrowth: 3.5,
         verified: true,
         label: 'Independent',
-        photo: 'https://i.scdn.co/image/ab6761610000e5ebc1d2e3f4a5b6c7d8e9f0a1b2',
+        photo: '/artists/NJmkyrEJgTcu.jpg',
         spotifyId: '1dpARuHxo51G3z768sgnrF',
         appleMusicId: '1234567897',
         youtubeId: 'UCabcdefghijklmnopqrstuvd'
