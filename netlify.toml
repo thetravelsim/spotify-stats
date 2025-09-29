@@ -3,8 +3,8 @@
   publish = "dist"
 
 # Optional: Redirects or other configurations can be added here
-# [[redirects]]
-#   from = "/*"
-#   to = "/index.html"
-#   status = 200
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
 
