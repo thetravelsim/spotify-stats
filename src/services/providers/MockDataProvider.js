@@ -209,7 +209,7 @@ class MockDataProvider {
         verified: true,
         label: 'Independent',
         photo: '/artists/GAj4GW2oD8fI.jpg',
-        spotifyId: '7dpARuHxo51G3z768sgnrB',
+        spotifyId: '1pkDzgHvVqC17qYGKfLPpb',
         appleMusicId: '1234567893',
         youtubeId: 'UCabcdefghijklmnopqrstuvz'
       },
@@ -233,7 +233,7 @@ class MockDataProvider {
         verified: true,
         label: 'Independent',
         photo: '/artists/M967KpW7wHPY.jpg',
-        spotifyId: '8dpARuHxo51G3z768sgnrC',
+        spotifyId: '2GAs9c2EgdZRVUyokP1Nys',
         appleMusicId: '1234567894',
         youtubeId: 'UCabcdefghijklmnopqrstuva'
       },
@@ -257,7 +257,7 @@ class MockDataProvider {
         verified: true,
         label: 'Independent',
         photo: '/artists/0YVZhy06U1Nn.jpg',
-        spotifyId: '9dpARuHxo51G3z768sgnrD',
+        spotifyId: '3oo88ul6DPnYZwZG4CZBTY',
         appleMusicId: '1234567895',
         youtubeId: 'UCabcdefghijklmnopqrstuvb'
       },
