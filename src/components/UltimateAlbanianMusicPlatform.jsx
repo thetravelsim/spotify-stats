@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, Filter, Download, Settings, Play, Heart, Share2, ExternalLink, TrendingUp, TrendingDown, Minus, Crown, Medal, Award, MapPin, Users, Music, Radio, Calendar, BarChart3, PieChart, LineChart, Globe, Headphones, Eye, ThumbsUp, MessageCircle, Repeat, Volume2, Mic, Star, Target, Zap, ArrowUp, ArrowDown, ChevronRight, ChevronLeft, MoreHorizontal, X, Check, AlertCircle, Info, Clock, Flame, Trophy } from 'lucide-react';
 import { LineChart as RechartsLineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart as RechartsPieChart, Cell, BarChart, Bar, AreaChart, Area, RadialBarChart, RadialBar, Legend } from 'recharts';
 import MusicDataService from '../services/MusicDataService';
+import ArtistImage from './ArtistImage';
 
 const UltimateAlbanianMusicPlatform = () => {
   const [activeSection, setActiveSection] = useState('weekly-artists');
@@ -129,7 +130,7 @@ const UltimateAlbanianMusicPlatform = () => {
             {renderRanking(index + 1)}
           </div>
           <div className="flex items-center w-5/12">
-            <img src={artist.photo || '/default-artist.png'} alt={artist.name} className="w-12 h-12 rounded-full mr-4 object-cover" />
+            <ArtistImage spotifyId={artist.spotifyId} localPhoto={artist.photo} alt={artist.name} className="w-12 h-12 rounded-full mr-4 object-cover" />
             <div>
               <p className="font-bold text-white">{artist.name}</p>
               <p className="text-sm text-gray-400">{artist.genre}</p>
@@ -272,31 +273,7 @@ const UltimateAlbanianMusicPlatform = () => {
           <button onClick={() => setSelectedArtist(null)} className="mr-4 p-2 rounded-full bg-gray-800 hover:bg-gray-700">
             <ChevronLeft className="w-6 h-6" />
           </button>
-          <img src={selectedArtist.photo || 
-            (selectedArtist.category === 'international' && selectedArtist.name === 'Dua Lipa' ? '/dua-lipa.jpg' : 
-            selectedArtist.category === 'international' && selectedArtist.name === 'Rita Ora' ? '/rita-ora.jpg' : 
-            selectedArtist.category === 'international' && selectedArtist.name === 'Bebe Rexha' ? '/bebe-rexha.jpg' : 
-            selectedArtist.category === 'international' && selectedArtist.name === 'Ava Max' ? '/ava-max.jpg' : 
-            selectedArtist.category === 'diaspora' && selectedArtist.name === 'Capital Bra' ? '/capital-bra.jpg' : 
-            selectedArtist.category === 'diaspora' && selectedArtist.name === 'Dardan' ? '/dardan.jpg' : 
-            selectedArtist.category === 'diaspora' && selectedArtist.name === 'Azet' ? '/azet.jpg' : 
-            selectedArtist.category === 'diaspora' && selectedArtist.name === 'Loredana Zefi' ? '/loredana-zefi.jpg' : 
-            selectedArtist.category === 'local' && selectedArtist.name === 'Noizy' ? '/noizy.jpg' : 
-            selectedArtist.category === 'local' && selectedArtist.name === 'Don Xhoni' ? '/don-xhoni.jpg' : 
-            selectedArtist.category === 'local' && selectedArtist.name === 'Dhurata Dora' ? '/dhurata-dora.jpg' : 
-            selectedArtist.category === 'local' && selectedArtist.name === 'Finem' ? '/finem.jpg' : 
-            selectedArtist.category === 'local' && selectedArtist.name === 'Ghetto Geasy' ? '/ghetto-geasy.jpg' : 
-            selectedArtist.category === 'local' && selectedArtist.name === 'Elai' ? '/elai.jpg' : 
-            selectedArtist.category === 'kosovo' && selectedArtist.name === 'Era Istrefi' ? '/era-istrefi.jpg' : 
-            selectedArtist.category === 'kosovo' && selectedArtist.name === 'Tayna' ? '/tayna.jpg' : 
-            selectedArtist.category === 'kosovo' && selectedArtist.name === 'Dafina Zeqiri' ? '/dafina-zeqiri.jpg' : 
-            selectedArtist.category === 'kosovo' && selectedArtist.name === 'Ledri Vula' ? '/ledri-vula.jpg' : 
-            selectedArtist.category === 'kosovo' && selectedArtist.name === 'Mozzik' ? '/mozzik.jpg' : 
-            selectedArtist.category === 'kosovo' && selectedArtist.name === 'Gjiko' ? '/gjiko.jpg' : 
-            selectedArtist.category === 'kosovo' && selectedArtist.name === 'MC Kresha' ? '/mc-kresha.jpg' : 
-            selectedArtist.category === 'kosovo' && selectedArtist.name === '2Ton' ? '/2ton.jpg' : 
-            selectedArtist.category === 'local' && selectedArtist.name === 'Butrint Imeri' ? '/butrint-imeri.jpg' : 
-            '/default-artist.png')} alt={selectedArtist.name} className="w-24 h-24 rounded-full mr-6 object-cover" />
+          <ArtistImage spotifyId={selectedArtist.spotifyId} localPhoto={selectedArtist.photo} alt={selectedArtist.name} className="w-24 h-24 rounded-full mr-6 object-cover" />
           <div>
             <h2 className="text-4xl font-bold">{selectedArtist.name}</h2>
             <div className="flex items-center text-gray-400 mt-2">

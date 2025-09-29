@@ -15,6 +15,7 @@
 import VibrateAPIProvider from './providers/VibrateAPIProvider';
 import SongstatsAPIProvider from './providers/SongstatsAPIProvider';
 import MockDataProvider from './providers/MockDataProvider';
+import SpotifyAPIProvider from './providers/SpotifyAPIProvider';
 
 class MusicDataService {
   constructor() {
@@ -31,7 +32,13 @@ class MusicDataService {
     this.providers = {
       viberate: new VibrateAPIProvider(),
       songstats: new SongstatsAPIProvider(),
-      mock: new MockDataProvider()
+      mock: new MockDataProvider(),
+      spotify: new SpotifyAPIProvider()
+    };
+
+    // Method to get artist image from Spotify
+    this.getArtistImageFromSpotify = async (spotifyId) => {
+      return this.providers.spotify.getArtistImage(spotifyId);
     };
 
     // Cache for API responses
