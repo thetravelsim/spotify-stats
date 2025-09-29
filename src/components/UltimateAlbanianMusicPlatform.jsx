@@ -188,53 +188,82 @@ const UltimateAlbanianMusicPlatform = () => {
   const renderArtistProfile = () => {
     if (!selectedArtist) return null;
 
+    // Generate realistic stream data based on artist's current metrics
+    const baseStreams = selectedArtist.weeklyStreams / 7; // Daily average
     const streamData = [
-      { name: 'Jan', streams: 4000 },
-      { name: 'Feb', streams: 3000 },
-      { name: 'Mar', streams: 5000 },
-      { name: 'Apr', streams: 4500 },
-      { name: 'May', streams: 6000 },
-      { name: 'Jun', streams: 5500 },
-      { name: 'Jul', streams: 7000 },
+      { name: 'Jan', streams: Math.floor(baseStreams * 0.7) },
+      { name: 'Feb', streams: Math.floor(baseStreams * 0.8) },
+      { name: 'Mar', streams: Math.floor(baseStreams * 0.9) },
+      { name: 'Apr', streams: Math.floor(baseStreams * 0.95) },
+      { name: 'May', streams: Math.floor(baseStreams * 1.1) },
+      { name: 'Jun', streams: Math.floor(baseStreams * 1.05) },
+      { name: 'Jul', streams: Math.floor(baseStreams) },
     ];
 
-    const audienceData = [
-      { name: 'Albania', value: 400, color: '#8884d8' },
-      { name: 'Kosovo', value: 300, color: '#82ca9d' },
-      { name: 'Germany', value: 300, color: '#ffc658' },
-      { name: 'Switzerland', value: 200, color: '#ff8042' },
-      { name: 'Italy', value: 278, color: '#00C49F' },
-      { name: 'USA', value: 189, color: '#FFBB28' },
+    // Generate audience data based on artist's origin and popularity
+    const isAlbanian = selectedArtist.country === 'Albania' || selectedArtist.country === 'Kosovo';
+    const audienceData = isAlbanian ? [
+      { name: 'Albania', value: 35, color: '#8884d8' },
+      { name: 'Kosovo', value: 25, color: '#82ca9d' },
+      { name: 'Germany', value: 15, color: '#ffc658' },
+      { name: 'Switzerland', value: 10, color: '#ff8042' },
+      { name: 'Italy', value: 8, color: '#00C49F' },
+      { name: 'USA', value: 7, color: '#FFBB28' },
+    ] : [
+      { name: 'USA', value: 30, color: '#8884d8' },
+      { name: 'UK', value: 20, color: '#82ca9d' },
+      { name: 'Germany', value: 15, color: '#ffc658' },
+      { name: 'Albania', value: 12, color: '#ff8042' },
+      { name: 'Kosovo', value: 10, color: '#00C49F' },
+      { name: 'Other', value: 13, color: '#FFBB28' },
     ];
 
-    const demographicsData = [
-      { name: '13-17', value: 15 },
-      { name: '18-24', value: 45 },
-      { name: '25-34', value: 30 },
-      { name: '35-44', value: 8 },
-      { name: '45+', value: 2 },
+    // Generate demographics data based on artist's genre
+    const isHipHop = selectedArtist.genre === 'Hip Hop';
+    const demographicsData = isHipHop ? [
+      { name: '13-17', value: 20 },
+      { name: '18-24', value: 50 },
+      { name: '25-34', value: 25 },
+      { name: '35-44', value: 4 },
+      { name: '45+', value: 1 },
+    ] : [
+      { name: '13-17', value: 12 },
+      { name: '18-24', value: 35 },
+      { name: '25-34', value: 35 },
+      { name: '35-44', value: 15 },
+      { name: '45+', value: 3 },
     ];
 
+    // Generate social data based on artist's actual metrics
+    const followerCount = parseInt(selectedArtist.followers.replace(/[^\d]/g, '')) * (selectedArtist.followers.includes('M') ? 1000000 : 1000);
     const socialData = {
-      spotify: { followers: selectedArtist.spotifyFollowers, growth: 5.2 },
-      instagram: { followers: 12300000, growth: 3.1 },
-      tiktok: { followers: 8900000, growth: 12.8 },
-      youtube: { subscribers: 5400000, growth: 2.5 },
+      spotify: { followers: followerCount, growth: selectedArtist.weeklyGrowth || 5.2 },
+      instagram: { followers: Math.floor(followerCount * 1.5), growth: (selectedArtist.weeklyGrowth || 5.2) * 0.6 },
+      tiktok: { followers: Math.floor(followerCount * 0.8), growth: (selectedArtist.weeklyGrowth || 5.2) * 1.8 },
+      youtube: { followers: Math.floor(followerCount * 0.4), growth: (selectedArtist.weeklyGrowth || 5.2) * 0.4 },
     };
 
+    // Generate top tracks based on artist's streaming metrics
+    const baseTrackStreams = selectedArtist.monthlyStreams / 5; // Assume top 5 tracks
     const topTracks = [
-      { id: 1, title: 'Song One', streams: 12000000, release: '2023-05-12' },
-      { id: 2, title: 'Song Two', streams: 9800000, release: '2023-02-28' },
-      { id: 3, title: 'Song Three', streams: 7600000, release: '2022-11-10' },
-      { id: 4, title: 'Song Four', streams: 5400000, release: '2023-08-01' },
-      { id: 5, title: 'Song Five', streams: 3200000, release: '2022-07-15' },
+      { id: 1, title: `${selectedArtist.name} - Hit Song`, streams: Math.floor(baseTrackStreams * 1.2), release: '2023-05-12' },
+      { id: 2, title: `${selectedArtist.name} - Popular Track`, streams: Math.floor(baseTrackStreams * 1.0), release: '2023-02-28' },
+      { id: 3, title: `${selectedArtist.name} - Fan Favorite`, streams: Math.floor(baseTrackStreams * 0.8), release: '2022-11-10' },
+      { id: 4, title: `${selectedArtist.name} - Latest Single`, streams: Math.floor(baseTrackStreams * 0.6), release: '2023-08-01' },
+      { id: 5, title: `${selectedArtist.name} - Classic`, streams: Math.floor(baseTrackStreams * 0.4), release: '2022-07-15' },
     ];
 
-    const playlistPlacements = [
-      { id: 1, name: "Today's Top Hits", platform: 'Spotify', followers: 32000000, position: 5 },
-      { id: 2, name: 'RapCaviar', platform: 'Spotify', followers: 15000000, position: 12 },
-      { id: 3, name: 'Pop Rising', platform: 'Spotify', followers: 2000000, position: 3 },
-      { id: 4, name: 'Global Top 50', platform: 'Apple Music', followers: 18000000, position: 8 },
+    // Generate playlist placements based on artist's genre and popularity
+    const playlistPlacements = selectedArtist.genre === 'Hip Hop' ? [
+      { id: 1, name: 'RapCaviar', platform: 'Spotify', followers: 15000000, position: Math.floor(Math.random() * 20) + 1 },
+      { id: 2, name: 'Hip Hop Central', platform: 'Spotify', followers: 8000000, position: Math.floor(Math.random() * 15) + 1 },
+      { id: 3, name: 'Balkan Hip Hop', platform: 'Spotify', followers: 500000, position: Math.floor(Math.random() * 5) + 1 },
+      { id: 4, name: 'Global Hip Hop', platform: 'Apple Music', followers: 12000000, position: Math.floor(Math.random() * 25) + 1 },
+    ] : [
+      { id: 1, name: "Today's Top Hits", platform: 'Spotify', followers: 32000000, position: Math.floor(Math.random() * 30) + 1 },
+      { id: 2, name: 'Pop Rising', platform: 'Spotify', followers: 2000000, position: Math.floor(Math.random() * 10) + 1 },
+      { id: 3, name: 'Balkan Pop', platform: 'Spotify', followers: 800000, position: Math.floor(Math.random() * 5) + 1 },
+      { id: 4, name: 'Global Top 50', platform: 'Apple Music', followers: 18000000, position: Math.floor(Math.random() * 40) + 1 },
     ];
 
     return (

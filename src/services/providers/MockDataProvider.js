@@ -40,7 +40,7 @@ class MockDataProvider {
         monthlyGrowth: 8.3,
         verified: true,
         label: 'Warner Records',
-        photo: 'https://i.scdn.co/image/ab6761610000e5eb0a7388b95df960b5c0da8970',
+        photo: '/artists/b7bGmztiAnEw.webp',
         spotifyId: '6M2wZ9GZgrQXHCFfjv46we',
         appleMusicId: '1061293024',
         youtubeId: 'UC-J-S5eKuZey9l3biz6ydxw'
@@ -64,7 +64,7 @@ class MockDataProvider {
         monthlyGrowth: 5.2,
         verified: true,
         label: 'Atlantic Records',
-        photo: 'https://i.scdn.co/image/ab6761610000e5eb5a00969a4698c3132a15fbb0',
+        photo: '/artists/949XoW4ceFqV.jpg',
         spotifyId: '5CCwRZC6euC8Odo6y9X8jr',
         appleMusicId: '278873078',
         youtubeId: 'UC2l6LmTCGRJVqjO9Uj8NNKA'
@@ -88,7 +88,7 @@ class MockDataProvider {
         monthlyGrowth: 18.5,
         verified: true,
         label: 'OTR Records',
-        photo: 'https://i.scdn.co/image/ab6761610000e5eb8b5cf6d9b2b8b5c4a8d9e7f2',
+        photo: '/artists/i51cNWgZ4EFP.jpeg',
         spotifyId: '4dpARuHxo51G3z768sgnrY',
         appleMusicId: '1234567890',
         youtubeId: 'UCabcdefghijklmnopqrstuvw'
@@ -112,7 +112,7 @@ class MockDataProvider {
         monthlyGrowth: 12.7,
         verified: true,
         label: 'Independent',
-        photo: 'https://i.scdn.co/image/ab6761610000e5eb7c8b5a9d2e3f4a6b8c9d0e1f',
+        photo: '/artists/BDGuB4y4GFBt.png',
         spotifyId: '5dpARuHxo51G3z768sgnrZ',
         appleMusicId: '1234567891',
         youtubeId: 'UCabcdefghijklmnopqrstuvx'
@@ -136,7 +136,7 @@ class MockDataProvider {
         monthlyGrowth: 16.2,
         verified: true,
         label: 'Independent',
-        photo: 'https://i.scdn.co/image/ab6761610000e5eb9f2a3b4c5d6e7f8a9b0c1d2e',
+        photo: '/artists/0zZQcV1fbemw.jpg',
         spotifyId: '6dpARuHxo51G3z768sgnrA',
         appleMusicId: '1234567892',
         youtubeId: 'UCabcdefghijklmnopqrstuvy'
@@ -160,7 +160,7 @@ class MockDataProvider {
         monthlyGrowth: 10.5,
         verified: true,
         label: 'Warner Records',
-        photo: 'https://i.scdn.co/image/ab6761610000e5eb8ae7f2c32dde3bec02b0e9a5',
+        photo: '/artists/4DosREkzX7Rr.jpg',
         spotifyId: '64M6ah0SkkRsnPGtGiRAbb',
         appleMusicId: '1061293025',
         youtubeId: 'UC-J-S5eKuZey9l3biz6ydxy'
